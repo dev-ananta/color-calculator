@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<html land = "en">
+    <head>
+        <meta charset = "UTF-8">
+        <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+        <title>Color Calculator</title>
+        <link rel = "stylesheet" href = "styles.css">
+    </head>
+
+    <body>
+        <main>
+            <section class = "preview-section">
+                <div id = "colorPreview"></div>
+            </section>
+
+            <section class="panel">
+                <h2>Conversions</h2>
+
+                <input id = "hexInput" placeholder = "#RRGGBB">
+                <input id = "rgbInput" placeholder = "rgb(255,255,255)">
+                <input id = "hslInput" placeholder = "hsl(0,100%,50%)">
+                <input id = "cmykInput" placeholder = "cmyk(0,100,100,0)">
+            </section>
+
+            <section class = "panel">
+                <h2>Mix Colors</h2>
+
+                <input type = "color" id = "mix1">
+                <input type = "color" id = "mix2">
+
+                <select id = "blendMode">
+                    <option value = "normal">Average</option>
+                    <option value = "multiply">Multiply</option>
+                    <option value = "screen">Screen</option>
+                    <option value = "overlay">Overlay</option>
+                </select>
+
+                <button id = "mixBtn">Mix</button>
+                <div id ="mixResult" class = "swatch"></div>
+            </section>
+
+            <section class = "panel">
+                <h2>Contrast Checker</h2>
+
+                <input type = "color" id = "contrast1">
+                <input type = "color" id = "contrast2">
+
+                <div id="contrastResult"></div>
+            </section>
+
+            <section class = "panel">
+                <h2>Palette Generator</h2>
+
+                <button id = "generatePalette">Generate</button>
+
+                <div id = "palette"></div>
+            </section>
+
+            <section class = "panel">
+                <h2>Recent Colors</h2>
+                <div id = "history"></div>
+            </section>
+        </main>
+
+        <footer>
+            Participating in Pixel by Hack Club - By Ananta the Developer
+        </footer>
+
+        <script src = "script.js"></script>
+    </body>
+</html>
