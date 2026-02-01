@@ -8,11 +8,28 @@ let justSolved = false;
 
 const hexInput = document.getElementById ("hexInput");
 const preview = document.getElementById ("colorPreview");
+const rgbInput = document.getElementById ("rgbInput");
+const hslInput = document.getElementById ("hslInput");
+const cmykInput = document.getElementById ("cmykInput");
+
+const mix1 = document.getElementById ("mix1");
+const mix2 = document.getElementById ("mix2");
+const blendMode = document.getElementById ("blendMode");
+const mixBtn = document.getElementById ("mixBtn");
+const mixResult = document.getElementById ("mixResult");
+
+const contrast1 = document.getElementById ("contrast1");
+const contrast2 = document.getElementById ("contrast2");
+const contrastResult = document.getElementById ("contrastResult");
+
+const generatePalette = document.getElementById ("generatePalette");
+const paletteContainer = document.getElementById ("palette");
 
 // Functions
 
 function render () {
-    const box = documents.getElementById ("exprBox");
+    const box = document.getElementById ("exprBox");
+    if (!box) return;
     box.innerHTML = "";
 
     tokens.forEach ( t=> {
@@ -75,19 +92,20 @@ function clearAll () {
     render ();
 }
 
-function rgbToHex (h) {
+function hexToRgb (hex) {
+    let bigint = parseInt (hex.slice (1), 16);
     return [
-        parseInt (h.slice (1, 3), 16),
-        parseInt (h.slice (3, 5), 16),
-        parseInt (h.slice (5, 7), 16)
+        (bigint >> 16) & 255,
+        (bigint >> 8) & 255,
+        bigint & 255
     ];
 }
 
-function rgbToHex (r,g,b) {
-    return "#" + [r,g,b].map ( x=> {
-        x = Math.max (0, Math.in (255, Math.round (x)));
-        return x.toString(16).padStart(2, "0");
-    }).join("");
+function rgbToHex (r, g, b) {
+    return "#" + [r, g, b].map (x => {
+        x = Math.max (0, Math.min (255, Math.round (x)));
+        return x.toString (16).padStart (2, "0");
+    }).join ("");
 }
 
 function calculate () {
@@ -95,7 +113,7 @@ function calculate () {
         let rE = "", gE = "", bE = "";
         tokens.forEach ( t=> {
             if (t.type === "color"){
-                let [r,g,b] = hexToRGB (t.value);
+                let [r,g,b] = hexToRgb (t.value);
                 rE += r;
                 gE += g;
                 bE += b;
@@ -117,7 +135,8 @@ function calculate () {
         let r = eval (rE), g = eval (gE), b = eval (bE);
         let ans = rgbToHex(r,g,b);
 
-        document.getElementById("resultColor").style.background = ans;
+        const resCol = document.getElementById("resultColor");
+        if (resCol) resCol.style.background = ans;
         lastAnswer = ans;
         justSolved = true;
     } catch {
@@ -125,23 +144,9 @@ function calculate () {
     }
 }
 
-function hexToRgb (hex) {
-    let bigint = parseInt (hex.slice (1), 16);
-    
-    return [
-        (bigint >> 16) & 255,
-        (bigint >> 8) & 255,
-        bigint & 255
-    ];
-}
-
-function rgbToHex (r,g,b) {
-    return "#" + [r,g,b].map ( x => x.toString (16).padStart (2, '0')).join ('');
-}
-
 function blend (a,b,mode) {
     if (mode === "multiply") return a*b/255;
-    if (mode === "scren") return 255-(255-a)*(255-b)/255;
+    if (mode === "screen") return 255-(255-a)*(255-b)/255;
     if (mode === "overlay") return a<128?2*a*b/255:255-2*(255-a)*(255-b)/255;
 
     return (a+b)/2;
@@ -156,7 +161,7 @@ function luminance (r,g,b) {
     return 0.2126*a[0]+0.7152*a[1]+0.0722*a[2];
 }
 
-function saveHistor (hex) {
+function saveHistory (hex) {
     let history = JSON.parse (localStorage.getItem ("colors")||"[]");
 
     if (!history.includes (hex)) {
@@ -170,6 +175,8 @@ function saveHistor (hex) {
 function renderHistory () {
     let history = JSON.parse (localStorage.getItem ("colors")||"[]");
     let container = document.getElementById ("history");
+
+    if (!container) return;
 
     container.innerHTML = "";
 
@@ -191,21 +198,23 @@ hexInput?.addEventListener ("input", () => {
 
     if (/^#([0-9A-F]{6})$/i.test(hex)) {
         let [r,g,b] = hexToRgb (hex);
-        preview.style.backgriund = hex;
-        document.getElementById ("rgbInput").value = `rgb(${r}, ${g}, ${b})`;
+        if (preview) preview.style.background = hex;
+        if (rgbInput) rgbInput.value = `rgb(${r}, ${g}, ${b})`;
     }
 });
 
-mixBtn.onclick = () => {
-    let c1 = hexToRgb (mix1.value), c2 = hexToRgb (mix2.value);
-    let mode = blendMode.value;
-    let result = rgbToHex (
-        blend (c1 [0], c2 [0], mode),
-        blend (c1 [1], c2 [1], mode),
-        blend (c1 [2], c2 [2], mode)
-    );
+if (mixBtn) {
+    mixBtn.onclick = () => {
+        let c1 = hexToRgb (mix1.value), c2 = hexToRgb (mix2.value);
+        let mode = blendMode.value;
+        let result = rgbToHex (
+            blend (c1 [0], c2 [0], mode),
+            blend (c1 [1], c2 [1], mode),
+            blend (c1 [2], c2 [2], mode)
+        );
 
-    mixResult.style.background = result;
+        mixResult.style.background = result;
+    }
 }
 
 contrast1.oninput = contrast2.oninput = () => {
