@@ -9,8 +9,6 @@ let justSolved = false;
 const hexInput = document.getElementById ("hexInput");
 const preview = document.getElementById ("colorPreview");
 const rgbInput = document.getElementById ("rgbInput");
-const hslInput = document.getElementById ("hslInput");
-const cmykInput = document.getElementById ("cmykInput");
 
 const mix1 = document.getElementById ("mix1");
 const mix2 = document.getElementById ("mix2");

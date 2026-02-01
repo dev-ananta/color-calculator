@@ -15,7 +15,7 @@ mac-google-messages/
 
 ## Project Features
 
-- **Multi-Format Conversion**: **HEX**, **RGB**, **HSL**, & **CMYK**.
+- **Multi-Format Conversion**: **HEX** & **RGB**.
 - **Color Mixing**: Blend 2 Colors using mathematical modes. (Average, Mutliply, Screen, Overlay, etc.)
 - **Accessibility Tools**: Integrate **WCAG 2.1 Contrast Checker** in order to ensure your color(s) meet accessibility standards.
 - **Palette Generation**: Automatically generate **Complemenatary**, **Analogous**, an d**Triadic** color palettes.
